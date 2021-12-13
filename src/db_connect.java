@@ -62,9 +62,10 @@ public class db_connect {
     
    public void add_db
         //(){
-        (int id, String password,  String username){
+        (int id, String password,  String username) throws SQLException{
         //(int id, String password, String last_login, int is_superuser, String username, String last_name, String email, int is_staff, int is_active, String date_joined, String first_name){
-       try{
+        this.connect_db();
+        try{
            stm=con.createStatement();
            
            //st.executeUpdate("INSERT INTO auth_user(id, password,  username) value ('"+id"', '"+password"', '"+username"')");
@@ -77,40 +78,104 @@ public class db_connect {
        
        
    }
+   
         public boolean login(String name, String pass) throws SQLException{
            boolean flag= false;
             try {
-            
+                this.connect_db();
                 stm=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-                rs=stm.executeQuery("SELECT * FROM ltnc.auth_user");
+                rs=stm.executeQuery("select * from ltnc.auth_user where username='"+name+"'");
                 while(rs.next()){
-                if(name.equals(rs.getString(5))&& pass.equals(rs.getString(2))){
-                    flag=true;
-                    
-                     
+                if( pass.equals(rs.getString(2))){
+                    flag=true; 
                 }
                 }
-            }
-                
-                
-                
-                
-                
-  
-      
-      
+            }    
             catch (SQLException ex) {
             Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
-      
-      
   }
             return flag;
+        }
+        
+        
+        
+        
+        public int get_id(String name, String pass) throws SQLException{
+           int id = 0;
+            try {
+                this.connect_db();
+                stm=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                rs=stm.executeQuery("select * from ltnc.auth_user where username='"+name+"'and password='"+id+"' ");
+//                if(rs.next()){
+//                if( pass.equals(rs.getString(2))){
+                    id=rs.getByte(1);
+                     
+//                }
+//                }
+                
+            }
+            catch (SQLException ex) {
+            Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
+  }
+            return id;
         
         }
+        
+        
+        public String getFullName(int id) throws SQLException{
+            this.connect_db();
+            stm=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                rs=stm.executeQuery("select * from ltnc.auth_user where id='"+id+"'");
+                if(rs.next()){
+                   
+                        return rs.getString("first_name")+" "+rs.getString("last_name");
+                
+                
+                }
+        return null;
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+        
   
+   public String getUserName(int id) throws SQLException{
+            this.connect_db();
+            stm=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                rs=stm.executeQuery("select * from ltnc.auth_user where id='"+id+"'");
+                if(rs.next()){
+                    
+                        return rs.getString("username");
+                
+                }
+                
+        
+        
+        return null;
+   }
+   public String getEmail(int id) throws SQLException{
+            this.connect_db();
+            stm=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                rs=stm.executeQuery("select * from ltnc.auth_user where id='"+id+"'");
+                if(rs.next()){
+                    
+                        return rs.getString("email");
+                
+              
+                }
+                return null;
+                }
+        
+        
     
     
-    
+   
+   
     
     
    public static void main(String []args) {

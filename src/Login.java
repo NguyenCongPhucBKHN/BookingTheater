@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    
+    public int id_user;
     public Login() {
         initComponents();
     }
@@ -139,10 +139,6 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFNameAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFNameAccActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFNameAccActionPerformed
-
     private void jBtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLoginActionPerformed
         // TODO add your handling code here:
         
@@ -161,8 +157,12 @@ public class Login extends javax.swing.JFrame {
 //            db.login(jTextFNameAcc.getText(), jPassFPass.getText());
 
 if(db.login(jTextFNameAcc.getText(), jPassFPass.getText())) {
+    this.id_user=db.get_id(jTextFNameAcc.getText(), jPassFPass.getText());
     this.setVisible(false);
-    new home().setVisible(true);
+    home ho=new home(this.id_user);
+    ho.setVisible(true);
+    System.out.println(db.getFullName(this.id_user));
+    System.out.println("Id user is " + ho.id_user);
 }
 else{
     JOptionPane.showMessageDialog(null,"Mật khẩu hoặc tên đăng nhập không chính xác");
@@ -189,6 +189,10 @@ else{
             jPassFPass.setEchoChar('*');
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jTextFNameAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFNameAccActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFNameAccActionPerformed
 
     /**
      * @param args the command line arguments
